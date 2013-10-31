@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ObjectListView">
+      <HintPath>..\_External\ObjectListView.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -50,11 +53,29 @@
     <Compile Include="SplashScreenForm.Designer.cs">
       <DependentUpon>SplashScreenForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UndoRedoControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UndoRedoControl.Designer.cs">
+      <DependentUpon>UndoRedoControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UndoSelector.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SplashScreenForm.resx">
       <DependentUpon>SplashScreenForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UndoRedoControl.resx">
+      <DependentUpon>UndoRedoControl.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\_External\Dejavu 1.0 Beta 1 Sources\Dejavu\DejaVu.csproj">
+      <Project>{A204BD9C-1C1A-4AE8-9716-B7B6C67E09F7}</Project>
+      <Name>DejaVu</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
