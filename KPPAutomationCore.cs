@@ -7,9 +7,40 @@ using System.Windows.Forms;
 namespace KPPAutomationCore {
 
 
+
+    public class UserDef {
+
+        private Acesslevel m_Level = Acesslevel.NotSet;
+
+        public Acesslevel Level {
+            get { return m_Level; }
+            set { m_Level = value; }
+        }
+
+        private String m_Pass = "";
+
+        public String Pass {
+            get { return m_Pass; }
+            set { m_Pass = value; }
+        }
+
+
+        public UserDef(String pass, Acesslevel level) {
+            Pass = pass;
+            Level = level;
+        }
+
+        public UserDef() {
+
+        }
+    }
+
+
+    public enum Acesslevel { Admin, User, NotSet, Man }
+
     public static class AcessManagement {
 
-        public enum Acesslevel { Admin, User, NotSet, Man }
+       
 
 
         public delegate void AcesslevelChanged(Acesslevel NewLevel);
