@@ -5,6 +5,13 @@ using System.Text;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections;
+using System.Resources;
+using System.Threading;
+using System.Reflection;
+using System.Drawing;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace KPPAutomationCore {
 
@@ -249,6 +256,8 @@ namespace KPPAutomationCore {
 
     #endregion
 
+    #region Acess Manegement Region
+
     public class UserDef {
 
         private Acesslevel m_Level = Acesslevel.NotSet;
@@ -281,7 +290,7 @@ namespace KPPAutomationCore {
 
     public static class AcessManagement {
 
-       
+
 
 
         public delegate void AcesslevelChanged(Acesslevel NewLevel);
@@ -303,5 +312,210 @@ namespace KPPAutomationCore {
                 }
             }
         }
+    } 
+    #endregion
+
+    public static class KPPExtensions {
+        public static string GetResourceText(this Object from, String ResVar) {
+            return GetResourceText(from, "VisionModule.Resources.Language.Res", ResVar);
+        }
+
+        public static string GetResourceText(this Object from, String ResLocation, String ResVar) {
+            try {
+                //ComponentResourceManager resources = new ComponentResourceManager();
+                ResourceManager res_man = new ResourceManager(ResLocation, from.GetType().Assembly);
+                return res_man.GetString(ResVar, Thread.CurrentThread.CurrentUICulture);
+            }
+            catch (Exception exp) {
+
+                return "Error getting resource";
+            }
+        }
+
+
+        public static object GetDefaultValue(this Object obj) {
+            if (obj == null) {
+                return null;
+            }
+
+            Type t = obj.GetType();
+
+            //return t.GetMethod("GetDefaultGeneric").MakeGenericMethod(t).Invoke(obj, null);
+
+            if (t.IsValueType) {
+                return Activator.CreateInstance(t);
+            }
+            else {
+                return null;
+            }
+        }
+
+        public static int RoundUp(this int num, int multiple) {
+            if (multiple == 0)
+                return 0;
+            int add = multiple / Math.Abs(multiple);
+            return ((num + multiple - add) / multiple) * multiple;
+        }
+
+
+        public static int NextEven(this int num) {
+            if ((num & 1) == 0) {
+                // It's even
+            }
+            else {
+                num++;
+            }
+
+            return num;
+        }
+
+
+        public static string base64Encode(this string data) {
+            try {
+                byte[] encData_byte = new byte[data.Length];
+                encData_byte = System.Text.Encoding.UTF8.GetBytes(data);
+                string encodedData = Convert.ToBase64String(encData_byte);
+                return encodedData;
+            }
+            catch (Exception e) {
+                throw new Exception("Error in base64Encode" + e.Message);
+            }
+        }
+
+        public static string base64Decode(this string data) {
+            try {
+                System.Text.UTF8Encoding encoder = new System.Text.UTF8Encoding();
+                System.Text.Decoder utf8Decode = encoder.GetDecoder();
+
+                byte[] todecode_byte = Convert.FromBase64String(data);
+                int charCount = utf8Decode.GetCharCount(todecode_byte, 0, todecode_byte.Length);
+                char[] decoded_char = new char[charCount];
+                utf8Decode.GetChars(todecode_byte, 0, todecode_byte.Length, decoded_char, 0);
+                string result = new String(decoded_char);
+                return result;
+            }
+            catch (Exception e) {
+                throw new Exception("Error in base64Decode" + e.Message);
+            }
+        }
+
+
+        public static void ChangeAttributeValue<T>(this object selectedObject, string propertyName, string field, bool newval) {
+
+            try {
+
+
+
+
+                PropertyDescriptor descriptor = TypeDescriptor.GetProperties(selectedObject.GetType())[propertyName];
+                //ReadOnlyAttribute attribute = (ReadOnlyAttribute)
+                //                              descriptor.Attributes[typeof(ReadOnlyAttribute)];
+
+                if (descriptor == null) {
+                    return;
+                }
+                object attribute = descriptor.Attributes[typeof(T)];
+
+                if (attribute == null) {
+                    return;
+                }
+                T attrval = (T)attribute;
+
+                FieldInfo fieldToChange = attrval.GetType().GetField(field,
+                                                 System.Reflection.BindingFlags.NonPublic
+                                                 | System.Reflection.BindingFlags.Instance
+                                                 );
+
+                if (fieldToChange == null) {
+                    return;
+                }
+                fieldToChange.SetValue(attrval, newval);
+
+            }
+            catch (Exception exp) {
+
+
+            }
+
+        }
+
     }
+
+    public enum LanguageName { Unk, PT, EN }    
+
+    public static class LanguageSettings {
+        private static LanguageName _Language = LanguageName.PT;
+
+        public static LanguageName Language {
+            get { return _Language; }
+            set {
+                if (_Language != value) {
+                    _Language = value;
+                    switch (value) {
+                        case LanguageName.Unk:
+                            break;
+                        case LanguageName.PT:
+                            break;
+                        case LanguageName.EN:
+
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
+    public class KPPFuctions {
+        
+                public static string ImageToBase64String(Image image) {
+            using (MemoryStream stream = new MemoryStream()) {
+                image.Save(stream, image.RawFormat);
+                return Convert.ToBase64String(stream.ToArray());
+            }
+        }
+
+        /// <summary>
+        /// Creates a new image from the given base64 encoded string.
+        /// </summary>
+        /// <param name="base64String">The encoded image data as a string.</param>
+        public static Image ImageFromBase64String(string base64String) {
+            using (MemoryStream stream = new MemoryStream(
+                Convert.FromBase64String(base64String)))
+            using (Image sourceImage = Image.FromStream(stream)) {
+                return new Bitmap(sourceImage);
+            }
+        }
+
+
+        
+
+
+
+
+
+        public static T Clone<T>(T source) {
+            if (!typeof(T).IsSerializable) {
+                throw new ArgumentException("The type must be serializable.", "source");
+            }
+
+            // Don't serialize a null object, simply return the default for that object
+            if (Object.ReferenceEquals(source, null)) {
+                return default(T);
+            }
+
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new MemoryStream();
+            using (stream) {
+                formatter.Serialize(stream, source);
+                stream.Seek(0, SeekOrigin.Begin);
+                return (T)formatter.Deserialize(stream);
+            }
+        }
+
+
+
+    }
+          
 }
