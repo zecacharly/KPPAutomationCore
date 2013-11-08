@@ -467,6 +467,15 @@ namespace KPPAutomationCore {
         }
     }
 
+    //public class KPPModuleException : Exception {
+    //    private String m_ModuleName;
+
+    //    public String ModuleName {
+    //        get { return m_ModuleName; }
+    //        set { m_ModuleName = value; }
+    //    }
+    //}
+
     public class KPPFuctions {
         
                 public static string ImageToBase64String(Image image) {
