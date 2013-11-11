@@ -332,7 +332,16 @@ namespace KPPAutomationCore {
             }
         }
 
+        public static String GetModuleName(this object obj) {
 
+            PropertyInfo propinf = obj.GetType().GetProperty("ModuleName");
+            if (propinf!=null) {
+                return (String)propinf.GetValue(obj, null);
+            }
+
+            return "N/A";
+
+        }
         public static object GetDefaultValue(this Object obj) {
             if (obj == null) {
                 return null;
@@ -526,5 +535,9 @@ namespace KPPAutomationCore {
 
 
     }
-          
+
+    //public interface IModuleName {
+
+    //    String ModuleName { get; set; }
+    //}
 }
