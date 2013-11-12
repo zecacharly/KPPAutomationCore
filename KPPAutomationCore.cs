@@ -12,8 +12,11 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using KPP.Core.Debug;
 
 namespace KPPAutomationCore {
+
+
 
     #region Custome types
 
@@ -21,6 +24,7 @@ namespace KPPAutomationCore {
 
     public class CustomCollection<T> : CollectionBase, ICustomTypeDescriptor {
 
+        
 
         private String _name = "List";
 
