@@ -336,16 +336,16 @@ namespace KPPAutomationCore {
             }
         }
 
-        public static String GetModuleName(this object obj) {
+        //public static String GetModuleName(this object obj) {
 
-            PropertyInfo propinf = obj.GetType().GetProperty("ModuleName");
-            if (propinf!=null) {
-                return (String)propinf.GetValue(obj, null);
-            }
+        //    PropertyInfo propinf = obj.GetType().GetProperty("ModuleName");
+        //    if (propinf!=null) {
+        //        return (String)propinf.GetValue(obj, null);
+        //    }
 
-            return "N/A";
+        //    return "N/A";
 
-        }
+        //}
         public static object GetDefaultValue(this Object obj) {
             if (obj == null) {
                 return null;
@@ -413,6 +413,29 @@ namespace KPPAutomationCore {
         }
 
 
+        public static void SetNewLogger(this KPPLogger thelogger ,Type logtype,string oldname,string newname){
+
+            if (oldname==null || newname==null) {
+                return;
+            }
+            thelogger = new KPPLogger(logtype, name: newname);
+
+            //TODO verify logs location
+
+            String path1 = Path.Combine(Application.StartupPath, "logs\\"+oldname+".log");
+            File.Delete(path1);
+            //String newFilePath = Path.Combine(Application.StartupPath, "logs\\"+ newname+".log");
+
+            //String allText = System.IO.File.ReadAllText(path1);
+            //allText += "\r\n";            
+
+            //using (FileStream fs = new FileStream(newFilePath, FileMode.OpenOrCreate)) {
+            //    System.IO.File.WriteAllText(newFilePath, allText);
+            //}
+
+
+
+        }
         public static void ChangeAttributeValue<T>(this object selectedObject, string propertyName, string field, bool newval) {
 
             try {
