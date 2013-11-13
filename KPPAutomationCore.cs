@@ -13,6 +13,8 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using KPP.Core.Debug;
+using WeifenLuo.WinFormsUI.Docking;
+using System.Xml.Serialization;
 
 namespace KPPAutomationCore {
 
@@ -20,7 +22,34 @@ namespace KPPAutomationCore {
 
     #region Custome types
 
+    //public class ModuleDockingSettings {
 
+    //    Double m_DockBottomPortion;
+    //    [XmlAttribute]
+    //    public Double DockBottomPortion {
+    //        get { return m_DockBottomPortion; }
+    //        set { m_DockBottomPortion = value; }
+    //    }
+
+    //    Double m_DockLeftPortion;
+    //    [XmlAttribute]
+    //    public Double DockLeftPortion {
+    //        get { return m_DockLeftPortion; }
+    //        set { m_DockLeftPortion = value; }
+    //    }
+
+    //    public DockPanel MainDock;
+
+    //    public ModuleDockingSettings(DockPanel mainDock,Double dockBottomPortion,dockLeftPortion) {
+    //        MainDock = mainDock;
+    //        DockBottomPortion=dockBottomPortion;
+    //        DockLeftPortion = dockLeftPortion;
+    //        MainDock.
+    //    }
+
+    //    public ModuleDockingSettings() {
+    //    }
+    //}
 
     public class CustomCollection<T> : CollectionBase, ICustomTypeDescriptor {
 
