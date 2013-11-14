@@ -442,23 +442,12 @@ namespace KPPAutomationCore {
         }
 
 
-        public static void SetNewLogger(this KPPLogger thelogger ,Type logtype,string logname){
+        public static KPPLogger SetNewLogger(this KPPLogger thelogger, Type logtype, string logname) {
 
 
-            thelogger = new KPPLogger(logtype, name: logname);
-
-            ////TODO verify logs location
-
-            //String path1 = Path.Combine(Application.StartupPath, "logs\\"+oldname+".log");
-            //File.Delete(path1);
-            ////String newFilePath = Path.Combine(Application.StartupPath, "logs\\"+ newname+".log");
-
-            //String allText = System.IO.File.ReadAllText(path1);
-            //allText += "\r\n";            
-
-            //using (FileStream fs = new FileStream(newFilePath, FileMode.OpenOrCreate)) {
-            //    System.IO.File.WriteAllText(newFilePath, allText);
-            //}
+            return new KPPLogger(logtype, name: logname);
+            
+           
 
 
 
