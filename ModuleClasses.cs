@@ -144,6 +144,7 @@ namespace KPPAutomationCore {
 
     public interface IModuleForm {
 
+        void InitModule(String moduleName, String visionSettingsFile);
         //event SelectedProjectChanged OnSelectedProjectChanged;
         
     }
