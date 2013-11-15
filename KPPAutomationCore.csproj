@@ -52,6 +52,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="VisionModule">
+      <HintPath>..\KPPVision\bin\Debug\VisionModule.dll</HintPath>
+    </Reference>
     <Reference Include="WeifenLuo.WinFormsUI.Docking">
       <HintPath>..\_External\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
@@ -71,6 +74,7 @@
     </Compile>
     <Compile Include="Debug.cs" />
     <Compile Include="KPPAutomationCore.cs" />
+    <Compile Include="ModuleClasses.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SplashScreenForm.cs">
       <SubType>Form</SubType>
@@ -104,6 +108,12 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IOModule\IOModule.csproj">
+      <Project>{DC8D7883-FB3F-4964-9F0D-B3B0B5907DD3}</Project>
+      <Name>IOModule</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
