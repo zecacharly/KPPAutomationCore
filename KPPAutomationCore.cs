@@ -349,13 +349,31 @@ namespace KPPAutomationCore {
     #endregion
 
     public static class KPPExtensions {
+
+        //public static string GetResourceText(this Object from, String ResVar) {
+        //    return GetResourceText(from, "VisionModule.Resources.Language.Res", ResVar);
+        //}
+
+        //public static string GetResourceText(this Object from, String ResLocation, String ResVar) {
+        //    try {
+        //        //ComponentResourceManager resources = new ComponentResourceManager();
+        //        ResourceManager res_man = new ResourceManager(ResLocation, from.GetType().Assembly);
+        //        return res_man.GetString(ResVar, Thread.CurrentThread.CurrentUICulture);
+        //    }
+        //    catch (Exception exp) {
+
+        //        return "Error getting resource";
+        //    }
+        //}
+
         public static string GetResourceText(this Object from, String ResVar) {
-            return GetResourceText(from, "VisionModule.Resources.Language.Res", ResVar);
+            return GetResourceText(from, from.GetType().Assembly.GetName().Name + ".Resources.Language.Res", ResVar);
         }
 
         public static string GetResourceText(this Object from, String ResLocation, String ResVar) {
             try {
-                //ComponentResourceManager resources = new ComponentResourceManager();
+
+                //ComponentResourceManager resources = new ComponentResourceManager(Program.);
                 ResourceManager res_man = new ResourceManager(ResLocation, from.GetType().Assembly);
                 return res_man.GetString(ResVar, Thread.CurrentThread.CurrentUICulture);
             }
@@ -364,6 +382,7 @@ namespace KPPAutomationCore {
                 return "Error getting resource";
             }
         }
+
 
         //public static String GetModuleName(this object obj) {
 
@@ -519,14 +538,6 @@ namespace KPPAutomationCore {
         }
     }
 
-    //public class KPPModuleException : Exception {
-    //    private String m_ModuleName;
-
-    //    public String ModuleName {
-    //        get { return m_ModuleName; }
-    //        set { m_ModuleName = value; }
-    //    }
-    //}
 
     public class KPPFuctions {
         

@@ -97,7 +97,8 @@ namespace KPPAutomationCore {
 
         public virtual List<String> ProjectDirectories { get; set; }
 
-        public virtual List<TCPServer> Servers { get; set; }
+       
+
         [XmlAttribute]
         public virtual String ProjectFile { get; set; }
 
@@ -145,6 +146,13 @@ namespace KPPAutomationCore {
     public interface IModuleForm {
 
         void InitModule(String moduleName, String visionSettingsFile);
+
+
+        
+        Boolean Restart {
+            get;
+            set;
+        }
         //event SelectedProjectChanged OnSelectedProjectChanged;
         
     }
