@@ -17,7 +17,7 @@ namespace KPPAutomationCore {
     public class ModuleProject : ICloneable {
 
 
-        private KPPLogger _log;
+        private static KPPLogger _log;
         [XmlIgnore,Browsable(false)]
         public virtual KPPLogger log {
             get { return _log; }
