@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 using KPP.Core.Debug;
 using IOModule;
 using System.ComponentModel;
-//using VisionModule;
+
 
 namespace KPPAutomationCore {
 
