@@ -461,16 +461,17 @@ namespace KPPAutomationCore {
         }
 
 
-        public static KPPLogger SetNewLogger(this KPPLogger thelogger, Type logtype, string logname) {
+        //public static KPPLogger SetNewLogger(this KPPLogger thelogger, Type logtype, string logname) {
 
 
-            return new KPPLogger(logtype, name: logname);
+        //    return new KPPLogger(logtype, name: logname);
             
            
 
 
 
-        }
+        //}
+
         public static void ChangeAttributeValue<T>(this object selectedObject, string propertyName, string field, bool newval) {
 
             try {
