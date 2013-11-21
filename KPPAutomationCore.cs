@@ -53,7 +53,9 @@ namespace KPPAutomationCore {
 
     public class CustomCollection<T> : CollectionBase, ICustomTypeDescriptor {
 
-        
+        public CustomCollection() {
+          
+        }
 
         private String _name = "List";
 
