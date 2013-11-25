@@ -19,7 +19,7 @@ namespace KPPAutomationCore {
 
         private static KPPLogger log = new KPPLogger(typeof(ModuleProject));
         
-
+        
         
         [XmlAttribute, Browsable(false)]
         public virtual String ModuleName {
