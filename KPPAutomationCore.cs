@@ -18,6 +18,7 @@ using System.Xml.Serialization;
 
 namespace KPPAutomationCore {
 
+    public delegate void AttributeValueChanged(Object obj);
 
 
     #region Custome types
@@ -54,7 +55,7 @@ namespace KPPAutomationCore {
     public class CustomCollection<T> : CollectionBase, ICustomTypeDescriptor {
 
         public CustomCollection() {
-          
+
         }
 
         private String _name = "List";
@@ -85,12 +86,10 @@ namespace KPPAutomationCore {
                         //index--;
 
                         return (T)this.List[index];
-                    }
-                    else {
+                    } else {
                         return default(T);
                     }
-                }
-                catch (Exception exp) {
+                } catch (Exception exp) {
 
                     return default(T);
 
@@ -221,12 +220,10 @@ namespace KPPAutomationCore {
                             return Name;
                         }
                         return source.ToString();
-                    }
-                    else {
+                    } else {
                         return "";
                     }
-                }
-                catch (Exception exp) {
+                } catch (Exception exp) {
                     return null;
                 }
             }
@@ -244,8 +241,7 @@ namespace KPPAutomationCore {
                     if (Name != "") {
                         return Name;
                     }
-                }
-                catch (Exception exp) {
+                } catch (Exception exp) {
 
 
                 }
@@ -287,7 +283,7 @@ namespace KPPAutomationCore {
         }
     }
 
-   
+
 
     #endregion
 
@@ -347,7 +343,7 @@ namespace KPPAutomationCore {
                 }
             }
         }
-    } 
+    }
     #endregion
 
     public static class KPPExtensions {
@@ -367,6 +363,11 @@ namespace KPPAutomationCore {
         //        return "Error getting resource";
         //    }
         //}
+        public static object GetPropertyValue(this object obj, string propertyName) {
+            return obj.GetType().GetProperties()
+               .Single(pi => pi.Name.ToLower().Contains(propertyName.ToLower()))
+               .GetValue(obj, null);
+        }
 
         public static string GetResourceText(this Object from, String ResVar) {
             return GetResourceText(from, from.GetType().Assembly.GetName().Name + ".Resources.Language.Res", ResVar);
@@ -378,8 +379,7 @@ namespace KPPAutomationCore {
                 //ComponentResourceManager resources = new ComponentResourceManager(Program.);
                 ResourceManager res_man = new ResourceManager(ResLocation, from.GetType().Assembly);
                 return res_man.GetString(ResVar, Thread.CurrentThread.CurrentUICulture);
-            }
-            catch (Exception exp) {
+            } catch (Exception exp) {
 
                 return "Error getting resource";
             }
@@ -407,8 +407,7 @@ namespace KPPAutomationCore {
 
             if (t.IsValueType) {
                 return Activator.CreateInstance(t);
-            }
-            else {
+            } else {
                 return null;
             }
         }
@@ -424,8 +423,7 @@ namespace KPPAutomationCore {
         public static int NextEven(this int num) {
             if ((num & 1) == 0) {
                 // It's even
-            }
-            else {
+            } else {
                 num++;
             }
 
@@ -439,8 +437,7 @@ namespace KPPAutomationCore {
                 encData_byte = System.Text.Encoding.UTF8.GetBytes(data);
                 string encodedData = Convert.ToBase64String(encData_byte);
                 return encodedData;
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 throw new Exception("Error in base64Encode" + e.Message);
             }
         }
@@ -456,8 +453,7 @@ namespace KPPAutomationCore {
                 utf8Decode.GetChars(todecode_byte, 0, todecode_byte.Length, decoded_char, 0);
                 string result = new String(decoded_char);
                 return result;
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 throw new Exception("Error in base64Decode" + e.Message);
             }
         }
@@ -467,12 +463,32 @@ namespace KPPAutomationCore {
 
 
         //    return new KPPLogger(logtype, name: logname);
-            
-           
+
+
 
 
 
         //}
+
+
+
+        private static AttributeValueChanged _OnAttributeValueChanged;
+        private static object _eventLock = new object();
+        public static event AttributeValueChanged OnAttributeValueChanged {
+            add {
+                lock (_eventLock) {
+                    _OnAttributeValueChanged -= value;
+                    _OnAttributeValueChanged += value;
+                }
+            }
+            remove {
+                lock (_eventLock) {
+                    _OnAttributeValueChanged -= value;
+                }
+            }
+        }
+
+
 
         public static void ChangeAttributeValue<T>(this object selectedObject, string propertyName, string field, bool newval) {
 
@@ -505,8 +521,10 @@ namespace KPPAutomationCore {
                 }
                 fieldToChange.SetValue(attrval, newval);
 
-            }
-            catch (Exception exp) {
+                if (_OnAttributeValueChanged != null) {
+                    _OnAttributeValueChanged(selectedObject);
+                }
+            } catch (Exception exp) {
 
 
             }
@@ -515,7 +533,7 @@ namespace KPPAutomationCore {
 
     }
 
-    public enum LanguageName { Unk, PT, EN }    
+    public enum LanguageName { Unk, PT, EN }
 
     public static class LanguageSettings {
         private static LanguageName _Language = LanguageName.PT;
@@ -541,10 +559,11 @@ namespace KPPAutomationCore {
         }
     }
 
+     
 
     public class KPPFuctions {
-        
-                public static string ImageToBase64String(Image image) {
+
+        public static string ImageToBase64String(Image image) {
             using (MemoryStream stream = new MemoryStream()) {
                 image.Save(stream, image.RawFormat);
                 return Convert.ToBase64String(stream.ToArray());
@@ -564,7 +583,11 @@ namespace KPPAutomationCore {
         }
 
 
-        
+
+
+
+       
+
 
 
 
